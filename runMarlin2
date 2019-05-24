@@ -1,0 +1,55 @@
+#!/bin/bash -x
+
+flist=$1
+start=$2
+end=$3
+inputxml=$4
+gearxml=$5
+isolep=$6
+model=$7
+
+outputDir=/hsm/ilc/users/yokugawa/preset_N_run/${model}/${isolep}
+logDir=./log
+
+tmpxmlDir=./tmpxml
+xmlDir=./myxml
+
+for count in $(seq $start $end)
+  do
+  input=`head -${count} ${flist} | tail -1`
+  echo ${input}
+  filename=`basename ${input}`
+  filename="${filename%.*}"
+  echo ${filename}
+  tmpxml=${tmpxmlDir}/${filename}.xml
+  lastxml=${xmlDir}/${filename}.xml
+  
+  log=${logDir}/${filename}.log
+  
+	rootout1=${outputDir}/particle_tagger_out/${filename}_PT.root
+  rootout2=${outputDir}/truth_vertex_finder_out/${filename}_TVF.root
+  rootout3=${outputDir}/TrashRecoProcessor_out/before_vtx_recovery/${filename}_TRP_before.root
+	rootout4=${outputDir}/vertex_restorer_out/${filename}_VR.root
+	rootout5=${outputDir}/TrashRecoProcessor_out/after_vtx_recovery/${filename}_TRP_after.root
+  rootout6=${outputDir}/QQbarProcessor_out/${filename}.root
+
+	if [ "$model" == "l5" ]; then
+		a=0.0183399
+		b1=0.11086
+		b2=0.0959317
+		bfield=3.5
+		sed -e "/<!-- INPUT.slcio -->/i $input" $inputxml | sed -e "/<!-- GEAR.xml -->/i $gearxml" | sed -e "/<!-- OUTPUT1.root -->/i $rootout1" | sed -e "/<!-- OUTPUT2.root -->/i $rootout2" | sed -e "/<!-- OUTPUT3.root -->/i $rootout3" | sed -e "/<!-- OUTPUT4.root -->/i $rootout4" | sed -e "/<!-- OUTPUT5.root -->/i $rootout5" | sed -e "/<!-- OUTPUT6.root -->/i $rootout6" | sed -e "/<!-- Parameter a -->/i $a" | sed -e "/<!-- Parameter b1 -->/i $b1" | sed -e "/<!-- Parameter b2 -->/i $b2" | sed -e "/<!-- Parameter bfield -->/i $bfield" > $lastxml
+	elif [ "$model" == "s5" ]; then
+		a=0.0186674
+		b1=0.108123
+		b2=0.0884433
+		bfield=4.0
+		sed -e "/<!-- INPUT.slcio -->/i $input" $inputxml | sed -e "/<!-- GEAR.xml -->/i $gearxml" | sed -e "/<!-- OUTPUT1.root -->/i $rootout1" | sed -e "/<!-- OUTPUT2.root -->/i $rootout2" | sed -e "/<!-- OUTPUT3.root -->/i $rootout3" | sed -e "/<!-- OUTPUT4.root -->/i $rootout4" | sed -e "/<!-- OUTPUT5.root -->/i $rootout5" | sed -e "/<!-- OUTPUT6.root -->/i $rootout6" | sed -e "/<!-- Parameter a -->/i $a" | sed -e "/<!-- Parameter b1 -->/i $b1" | sed -e "/<!-- Parameter b2 -->/i $b2" | sed -e "/<!-- Parameter bfield -->/i $bfield" > $lastxml
+	fi
+
+  ${MARLIN}/bin/Marlin $lastxml > $log 2>&1
+  
+  echo "$count event finished"
+  
+done
+

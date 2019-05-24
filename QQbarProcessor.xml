@@ -1,0 +1,55 @@
+<marlin>
+
+<!--########  Execute  ######################################## -->
+
+<execute>
+ <!-- TTBarAnalysis -->
+   <processor name="MyQQbarProcessor"/>
+   <processor name="DSTOutput"/>
+</execute>
+
+
+<!--########  Global  ######################################## -->
+
+<global>
+<parameter name="LCIOInputFiles">
+<!-- INPUT.slcio -->
+</parameter>
+<!--<parameter name="GearXMLFile" value="GearOutput_new_large.xml"/>-->
+<parameter name="GearXMLFile" value="gear_ILD_l5_v02.xml"/>
+<parameter name="SkipNEvents" value="0"/>
+<parameter name="SupressCheck" value="false"/>
+<parameter name="Verbosity" options="DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT"> MESSAGE </parameter>
+<parameter name="RandomSeed" value="1234567890" />
+</global>
+
+
+<!--######## Processor  ######################################## -->
+
+<!--########  TTBarAnalysis  ######################################## -->
+<processor name="MyQQbarProcessor" type="QQbarProcessor">
+  <parameter name="ROOTFileName" type="string">
+  <!-- OUTPUT.root -->
+  </parameter>
+  <parameter name="MassCut" type="float"> 200 </parameter>
+  <parameter name="AnalysisType" type="int"> 0 </parameter>
+  <parameter name="PFOCollection" type="string"> PandoraPFOs_withoutLepton </parameter>
+  <parameter name="JetCollectionName" type="string"> RecoveredJets </parameter>
+  <!--parameter name="JetCollectionName" type="string"> FinalJets </parameter> -->
+  <parameter name="JetRelCollectionName" type="string"> RecoveredJets_rel </parameter>
+  <!--parameter name="JetRelCollectionName" type="string"> FinalJets_rel </parameter> -->
+  <parameter name="MCCollectionName" type="string"> MCParticle </parameter>
+  <parameter name="RecoMcTruthCollectionName" type="string"> RecoMCTruthLink </parameter>
+</processor>
+
+<!--########  DSTOutput  ######################################## -->
+<processor name="DSTOutput" type="LCIOOutputProcessor">
+  <!--DST output: drop all hits, skim MCParticles and keep final Tracks, Clusters and  ReconstructedParticles-->
+  <parameter name="LCIOOutputFile" type="string" >
+  <!-- OUTPUT.slcio -->
+  </parameter>
+  <parameter name="LCIOWriteMode" type="string" value="WRITE_NEW"/>
+  <!--parameter name="SplitFileSizekB" type="int" value="1992294"/-->
+</processor>
+
+</marlin>
