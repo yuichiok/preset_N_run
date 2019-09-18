@@ -18,8 +18,8 @@ gearxml=gear_ILD_${model}_v02.xml
 #processID=I108670
 
 # type isolated lepton
-#isolep=electron
-isolep=muon
+isolep=electron
+#isolep=muon
 #isolep=tau
 #isolep=muon_tau
 
@@ -32,6 +32,7 @@ processID=default
 if [ "$model" == "l5" ]; then
 	if [ "$isolep" == "electron" ]; then
 		dirin=/hsm/ilc/users/yonamine/physics/lcfiplus/vertexing_6f_ttbar/
+		#processID=I108668
 		processID=I108670
 	else
 		dirin=/home/ilc/yonamine/work/Yuichi/test20190328/run/slcio/
@@ -40,6 +41,7 @@ if [ "$model" == "l5" ]; then
 elif [ "$model" == "s5" ]; then
 	if [ "$isolep" == "electron" ]; then
 		dirin=/hsm/ilc/users/yonamine/physics/lcfiplus/vertexing_6f_ttbar_s5/
+		#processID=I108668
 		processID=I108670
 	else
 		dirin=/home/ilc/yonamine/work/Yuichi/test20190328/run_s5/slcio/

@@ -10,7 +10,7 @@ gearxml=$7
 isolep=$8
 model=$9
 
-flist=list/${id}.list
+flist=list/${id}_${model}.list
 if [ ! -f ${flist} ] ; then
     `find ${data_input} -name *${id}*.slcio | sort > ${flist}`
 else
